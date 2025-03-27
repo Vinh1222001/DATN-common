@@ -19,4 +19,15 @@ struct SemaphoreQueueData
   SemaphoreHandle_t xQueue;
 };
 
+struct VectorElements
+{
+  float x = 0;
+  float y = 0;
+  float z = 0;
+
+  float resultant() const
+  {
+    return sqrt(x * x + y * y + z * z);
+  }
+};
 #endif
