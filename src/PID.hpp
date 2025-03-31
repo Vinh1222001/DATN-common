@@ -25,6 +25,4 @@ public:
     void reset();
 };
 
-#include "PID.cpp"
-
 #endif
