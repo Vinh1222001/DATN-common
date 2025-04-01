@@ -22,6 +22,8 @@ public:
   BaseModule(const char *name, int priority = DEFAULT_TASK_PRIORITY, int taskDelay = 1000, int stackDepthLevel = 1, int cpuCore = 0);
   virtual ~BaseModule();
 
+  char *getName();
+
   virtual void taskFn() = 0;
   static void taskWrapper(void *pvParameter);
   void createTask();

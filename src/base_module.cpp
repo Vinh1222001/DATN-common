@@ -34,6 +34,11 @@ void BaseModule::taskFn()
   ESP_LOGI(this->NAME, "Running taskFn of Base Module\n");
 }
 
+char *BaseModule::getName()
+{
+  return (char *)this->NAME;
+}
+
 void BaseModule::taskWrapper(void *pvParameter)
 {
   BaseModule *instance = static_cast<BaseModule *>(pvParameter);
