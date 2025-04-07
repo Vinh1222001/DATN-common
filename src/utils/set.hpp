@@ -18,13 +18,15 @@ namespace SetUtils
     }
 
     template <typename T>
-    Types::EspNowMessage<T> createEspNowMessage(const T &content)
+    Types::EspNowMessage createEspNowMessage(const T &content)
     {
-        Types::EspNowMessage<T> message;
+        const String _content = String(content);
+        Types::EspNowMessage message;
         const String uuid = generateUUID();
         strncpy(message.id, uuid.c_str(), uuid.length() - 1);
         message.id[sizeof(message.id) - 1] = '\0';
-        message.content = content;
+        strncpy(message.content, _content.c_str(), sizeof(message.content) - 1);
+        message.content[sizeof(message.content) - 1] = '\0';
         return message;
     }
 

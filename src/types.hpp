@@ -41,11 +41,10 @@ namespace Types
     T data;
   };
 
-  template <typename T>
   struct EspNowMessage
   {
     char id[36];
-    T content;
+    char content[250];
   };
 
 }
