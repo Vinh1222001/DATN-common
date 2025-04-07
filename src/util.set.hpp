@@ -29,13 +29,14 @@ namespace SetUtils
     template <typename T>
     Types::HttpResponse<T> createHttpResponse(
         bool success = false,
-        String message = "Some thing went wrong!",
-        T &data)
+        String message = "Something went wrong!",
+        T data) // mặc định là giá trị khởi tạo của kiểu T
     {
         Types::HttpResponse<T> res;
         res.success = success;
         res.message = message;
         res.data = data;
+        return res;
     }
 }
 
