@@ -6,6 +6,13 @@
 
 namespace Constants
 {
+    enum ClassifyTags
+    {
+        TAG1 = 300,
+        TAG2,
+        TAG3,
+        UNKNOW
+    }
 }
 
 #endif
