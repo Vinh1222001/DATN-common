@@ -11,6 +11,7 @@ namespace SetUtils
     inline String generateUUID()
     {
         UUID uuid;
+        uuid.setVersion4Mode();
         uuid.seed(millis());       // Seed bằng thời gian hiện tại
         uuid.generate();           // Tạo UUID mới
         return uuid.toCharArray(); // Chuyển UUID thành chuỗi
@@ -20,7 +21,9 @@ namespace SetUtils
     Types::EspNowMessage<T> createEspNowMessage(const T &content)
     {
         Types::EspNowMessage<T> message;
-        message.id = generateUUID();
+        const String uuid = generateUUID();
+        strncpy(message.id, uuid.c_str(), uuid.length() - 1);
+        message.id[sizeof(message.id) - 1] = '\0';
         message.content = content;
         return message;
     }

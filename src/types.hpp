@@ -44,7 +44,7 @@ namespace Types
   template <typename T>
   struct EspNowMessage
   {
-    String id;
+    char id[36];
     T content;
   };
 
