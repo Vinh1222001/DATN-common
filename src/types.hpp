@@ -4,30 +4,50 @@
 
 #include <Arduino.h>
 
-template <typename T>
-struct SemaphoreMutexData
+namespace Types
 {
-  T value;
-  SemaphoreHandle_t xMutex;
-};
-
-template <typename T>
-struct SemaphoreQueueData
-{
-  T sendData;
-  T recieveDate;
-  SemaphoreHandle_t xQueue;
-};
-
-struct VectorElements
-{
-  float x = 0;
-  float y = 0;
-  float z = 0;
-
-  float resultant() const
+  template <typename T>
+  struct SemaphoreMutexData
   {
-    return sqrt(x * x + y * y + z * z);
-  }
-};
+    T value;
+    SemaphoreHandle_t xMutex;
+  };
+
+  template <typename T>
+  struct SemaphoreQueueData
+  {
+    T send;
+    T receive;
+    SemaphoreHandle_t xQueue;
+  };
+
+  struct VectorElements
+  {
+    float x = 0;
+    float y = 0;
+    float z = 0;
+
+    float resultant() const
+    {
+      return sqrt(x * x + y * y + z * z);
+    }
+  };
+
+  template <typename T>
+  struct HttpResponse
+  {
+    bool success;
+    String message;
+    T data;
+  };
+
+  template <typename T>
+  struct EspNowMessage
+  {
+    String id;
+    T content;
+  };
+
+}
+
 #endif
