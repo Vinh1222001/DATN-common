@@ -28,9 +28,9 @@ namespace SetUtils
 
     template <typename T>
     Types::HttpResponse<T> createHttpResponse(
-        const bool success = false,
-        const String message = "Some thing went wrong!",
-        const T &data)
+        bool success = false,
+        String message = "Some thing went wrong!",
+        T &data)
     {
         Types::HttpResponse<T> res;
         res.success = success;
