@@ -37,14 +37,14 @@ namespace Types
   struct HttpResponse
   {
     bool success;
-    String message;
+    char *message;
     T data;
   };
 
   template <typename T>
   struct EspNowMessage
   {
-    String id;
+    char *id;
     T content;
   };
 
