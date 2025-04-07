@@ -1,6 +1,6 @@
 #pragma once
-#ifndef WIFI_UTIL_HPP
-#define WIFI_UTIL_HPP
+#ifndef CONSTANTS_HPP
+#define CONSTANTS_HPP
 
 #include <Arduino.h>
 
