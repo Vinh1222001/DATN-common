@@ -2,6 +2,7 @@
 #ifndef SET_UTILS_HPP
 #define SET_UTILS_HPP
 
+#include <Arduino.h>
 #include "types.hpp"
 #include <UUID.h>
 

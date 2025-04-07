@@ -2,6 +2,7 @@
 #ifndef WIFI_UTIL_HPP
 #define WIFI_UTIL_HPP
 
+#include <Arduino.h>
 #include <WiFi.h>
 #include "esp_log.h"
 
