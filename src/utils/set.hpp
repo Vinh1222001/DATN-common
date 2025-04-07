@@ -20,7 +20,7 @@ namespace SetUtils
     template <typename T>
     Types::EspNowMessage createEspNowMessage(const T &content)
     {
-        const String _content = String(content);
+        const String _content(content);
         Types::EspNowMessage message;
         const String uuid = generateUUID();
         strncpy(message.id, uuid.c_str(), uuid.length() - 1);
