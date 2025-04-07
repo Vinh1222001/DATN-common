@@ -8,10 +8,9 @@
 
 namespace SetUtils
 {
-    extern UUID uuid; // Khai báo extern nếu dùng trong nhiều file
-
     inline String generateUUID()
     {
+        UUID uuid;
         uuid.seed(millis());       // Seed bằng thời gian hiện tại
         uuid.generate();           // Tạo UUID mới
         return uuid.toCharArray(); // Chuyển UUID thành chuỗi
