@@ -12,7 +12,7 @@ namespace Constants
         TAG2,
         TAG3,
         UNKNOW
-    }
+    };
 }
 
 #endif
