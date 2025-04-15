@@ -51,6 +51,9 @@ void BaseModule::taskWrapper(void *pvParameter)
 
   const uint32_t taskDelay = instance->TASK_DELAY;
 
+  vTaskDelay(pdMS_TO_TICKS(2000));
+  ESP_LOGI("BaseModule", "Start task");
+
   while (true)
   {
     instance->taskFn();
