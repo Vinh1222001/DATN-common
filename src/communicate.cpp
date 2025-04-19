@@ -44,7 +44,7 @@ bool Communicate::begin()
   return true;
 }
 
-bool Communicate::send(const std::vector<String> &data)
+bool Communicate::send(String header, const std::vector<String> &data)
 {
   String combined;
   for (size_t i = 0; i < data.size(); ++i)
@@ -53,11 +53,10 @@ bool Communicate::send(const std::vector<String> &data)
     if (i < data.size() - 1)
       combined += ","; // dùng dấu phẩy để phân tách
   }
-  char hold[200];
 
-  const Types::EspNowMessage msg = SetUtils::createEspNowMessage<String>(combined);
+  const Types::EspNowMessage msg = SetUtils::createEspNowMessage<String>(header, combined);
 
-  ESP_LOGI(this->TAG, "Data send: Id:%s and content: %s, size: %d", msg.id, msg.content, sizeof(msg));
+  ESP_LOGI(this->TAG, "Data send: Id:%s, header, %s, content: %s, size: %d", msg.id, msg.header, msg.content, sizeof(msg));
   esp_err_t result = esp_now_send(peerMac, reinterpret_cast<const uint8_t *>(&msg), sizeof(msg));
   if (result == ESP_OK)
   {
@@ -105,10 +104,6 @@ void Communicate::onDataRecv(const uint8_t *mac, const uint8_t *incomingData, in
     this->receiveMsg.value = String(packet->content);
     xSemaphoreGive(this->receiveMsg.xMutex);
   }
-}
-
-void Communicate::taskFn()
-{
 }
 
 String Communicate::getReceiveMsg()

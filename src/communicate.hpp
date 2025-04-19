@@ -9,6 +9,13 @@
 #include "vector"
 
 using Message = Types::SemaphoreMutexData<String>;
+
+struct CommunicateResponse
+{
+  char *header;
+  char *content;
+};
+
 class Communicate
 {
 private:
@@ -30,7 +37,7 @@ public:
   ~Communicate();
 
   bool begin();
-  bool send(const std::vector<String> &data);
+  bool send(String header, const std::vector<String> &data);
   String getReceiveMsg();
 };
 
