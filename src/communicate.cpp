@@ -55,7 +55,7 @@ bool Communicate::send(String header, const std::vector<String> &data)
   }
 
   const Types::EspNowMessage msg = SetUtils::createEspNowMessage<String>(header, combined);
-
+  static_assert(sizeof(Types::EspNowMessage) <= 250);
   ESP_LOGI(this->TAG, "Data send: Id:%s, header, %s, content: %s, size: %d", msg.id, msg.header, msg.content, sizeof(msg));
   esp_err_t result = esp_now_send(peerMac, reinterpret_cast<const uint8_t *>(&msg), sizeof(msg));
   if (result == ESP_OK)

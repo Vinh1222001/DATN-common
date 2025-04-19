@@ -24,10 +24,10 @@ namespace SetUtils
         Types::EspNowMessage message;
 
         const String uuid = generateUUID();
-        strncpy(message.id, uuid.c_str(), uuid.length() - 1);
+        strncpy(message.id, uuid.c_str(), sizeof(message.id) - 1);
         message.id[sizeof(message.id) - 1] = '\0';
 
-        strncpy(message.header, header.c_str(), header.length() - 1);
+        strncpy(message.header, header.c_str(), sizeof(message.header) - 1);
         message.header[sizeof(message.header) - 1] = '\0';
 
         strncpy(message.content, _content.c_str(), sizeof(message.content) - 1);
