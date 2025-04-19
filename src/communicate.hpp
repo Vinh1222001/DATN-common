@@ -12,6 +12,7 @@ using Message = Types::SemaphoreMutexData<String>;
 class Communicate
 {
 private:
+  const char *TAG = "COMMUNICATE";
   static Communicate *instance; // Static pointer to the current instance
   uint8_t peerMac[6];
 

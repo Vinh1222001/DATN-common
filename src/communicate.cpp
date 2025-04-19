@@ -5,7 +5,6 @@
 Communicate *Communicate::instance = nullptr;
 
 Communicate::Communicate(const uint8_t mac[6])
-    : BaseModule("CLASSIFYING_COMMUNICATE")
 {
   instance = this;
   memcpy(this->peerMac, mac, 6);
@@ -19,7 +18,7 @@ bool Communicate::begin()
 {
   if (esp_now_init() != ESP_OK)
   {
-    ESP_LOGE(this->NAME, "ESP-NOW init failed");
+    ESP_LOGE(this->TAG, "ESP-NOW init failed");
     return false;
   }
 
@@ -32,7 +31,7 @@ bool Communicate::begin()
   {
     if (esp_now_add_peer(&peerInfo) != ESP_OK)
     {
-      ESP_LOGE(this->NAME, "Failed to add peer");
+      ESP_LOGE(this->TAG, "Failed to add peer");
       return false;
     }
   }
@@ -41,7 +40,7 @@ bool Communicate::begin()
   esp_now_register_send_cb(onDataSentStatic);
   esp_now_register_recv_cb(onDataRecvStatic);
 
-  ESP_LOGI(this->NAME, "ESP-NOW init successful");
+  ESP_LOGI(this->TAG, "ESP-NOW init successful");
   return true;
 }
 
@@ -58,16 +57,16 @@ bool Communicate::send(const std::vector<String> &data)
 
   const Types::EspNowMessage msg = SetUtils::createEspNowMessage<String>(combined);
 
-  ESP_LOGI(this->NAME, "Data send: Id:%s and content: %s, size: %d", msg.id, msg.content, sizeof(msg));
+  ESP_LOGI(this->TAG, "Data send: Id:%s and content: %s, size: %d", msg.id, msg.content, sizeof(msg));
   esp_err_t result = esp_now_send(peerMac, reinterpret_cast<const uint8_t *>(&msg), sizeof(msg));
   if (result == ESP_OK)
   {
-    ESP_LOGI(this->NAME, "Sent data successfully");
+    ESP_LOGI(this->TAG, "Sent data successfully");
     return true;
   }
   else
   {
-    ESP_LOGE(this->NAME, "Failed to send data: %d", result);
+    ESP_LOGE(this->TAG, "Failed to send data: %d", result);
     return false;
   }
 }
@@ -86,7 +85,7 @@ void Communicate::onDataRecvStatic(const uint8_t *mac, const uint8_t *incomingDa
 
 void Communicate::onDataSent(const uint8_t *mac_addr, esp_now_send_status_t status)
 {
-  ESP_LOGI(this->NAME, "Data sent to %02X:%02X:%02X:%02X:%02X:%02X - Status: %s",
+  ESP_LOGI(this->TAG, "Data sent to %02X:%02X:%02X:%02X:%02X:%02X - Status: %s",
            mac_addr[0], mac_addr[1], mac_addr[2],
            mac_addr[3], mac_addr[4], mac_addr[5],
            status == ESP_NOW_SEND_SUCCESS ? "Success" : "Fail");
@@ -94,12 +93,12 @@ void Communicate::onDataSent(const uint8_t *mac_addr, esp_now_send_status_t stat
 
 void Communicate::onDataRecv(const uint8_t *mac, const uint8_t *incomingData, int len)
 {
-  ESP_LOGI(this->NAME, "Received data from %02X:%02X:%02X:%02X:%02X:%02X, length: %d",
+  ESP_LOGI(this->TAG, "Received data from %02X:%02X:%02X:%02X:%02X:%02X, length: %d",
            mac[0], mac[1], mac[2], mac[3], mac[4], mac[5], len);
 
   // Chuyển đổi dữ liệu thành Message
   const Types::EspNowMessage *packet = reinterpret_cast<const Types::EspNowMessage *>(incomingData);
-  ESP_LOGI(this->NAME, "Data Received: Id: %s, Value: %s", packet->id, packet->content);
+  ESP_LOGI(this->TAG, "Data Received: Id: %s, Value: %s", packet->id, packet->content);
   // TODO: Bạn có thể thêm logic xử lý dữ liệu ở đây
   if (xSemaphoreTake(this->receiveMsg.xMutex, portMAX_DELAY) == pdTRUE)
   {
