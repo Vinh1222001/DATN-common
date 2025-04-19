@@ -1,6 +1,6 @@
 #pragma once
-#ifndef STRING_UTIL_HPP
-#define STRING_UTIL_HPP
+#ifndef _STRING_UTIL_HPP
+#define _STRING_UTIL_HPP
 
 #include <stdio.h>
 #include <stdlib.h>
