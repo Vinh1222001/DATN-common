@@ -31,7 +31,7 @@ BaseModule::~BaseModule() {}
 
 void BaseModule::taskFn()
 {
-  ESP_LOGI(this->NAME, "Running taskFn of Base Module\n");
+  ESP_LOGI(this->NAME, "Running taskFn of Base Module");
 }
 
 char *BaseModule::getName()
@@ -44,7 +44,7 @@ void BaseModule::taskWrapper(void *pvParameter)
   BaseModule *instance = static_cast<BaseModule *>(pvParameter);
   if (instance == nullptr)
   {
-    ESP_LOGE("BaseModule", "taskWrapper received a null instance\n");
+    ESP_LOGE("BaseModule", "taskWrapper received a null instance");
     vTaskDelete(nullptr);
     return;
   }
@@ -100,10 +100,10 @@ void BaseModule::createTask()
 
     if (xTaskCreatePinnedToCore(taskWrapper, this->NAME, stackDeep, this, priority, &(this->taskHandler), cpuCore) == pdPASS)
     {
-      ESP_LOGI(this->NAME, "Task created SUCCESSFULLY\n");
+      ESP_LOGI(this->NAME, "Task created SUCCESSFULLY");
       while (this->taskHandler != NULL && !this->isTaskSuspended())
       {
-        ESP_LOGI(this->NAME, "Suspending task\n");
+        ESP_LOGI(this->NAME, "Suspending task");
         vTaskSuspend(this->taskHandler);
         delay(1000);
       }
@@ -111,7 +111,7 @@ void BaseModule::createTask()
     }
     else
     {
-      ESP_LOGE(this->NAME, "Task creation FAILED\n");
+      ESP_LOGE(this->NAME, "Task creation FAILED");
       this->errorPending();
     }
   }
