@@ -101,7 +101,9 @@ void Communicate::onDataRecv(const uint8_t *mac, const uint8_t *incomingData, in
   // TODO: Bạn có thể thêm logic xử lý dữ liệu ở đây
   if (xSemaphoreTake(this->receiveMsg.xMutex, portMAX_DELAY) == pdTRUE)
   {
-    this->receiveMsg.value = String(packet->content);
+    this->receiveMsg.value.id = String(packet->id);
+    this->receiveMsg.value.header = String(packet->header);
+    this->receiveMsg.value.content = String(packet->content);
     xSemaphoreGive(this->receiveMsg.xMutex);
   }
 }
@@ -111,13 +113,26 @@ String Communicate::getReceiveMsg()
   String msg;
   if (xSemaphoreTake(this->receiveMsg.xMutex, portMAX_DELAY) == pdTRUE)
   {
-    if (this->receiveMsg.value.length() > 0)
+    if (this->receiveMsg.value.content.length() > 0)
     {
-      msg = this->receiveMsg.value;
+      msg = String(this->receiveMsg.value.content);
     }
 
     xSemaphoreGive(this->receiveMsg.xMutex);
   }
 
   return msg;
+}
+
+CommunicateResponse Communicate::getResponse()
+{
+  CommunicateResponse response;
+  if (xSemaphoreTake(this->receiveMsg.xMutex, portMAX_DELAY) == pdTRUE)
+  {
+    response = this->receiveMsg.value;
+
+    xSemaphoreGive(this->receiveMsg.xMutex);
+  }
+
+  return response;
 }

@@ -7,14 +7,14 @@
 #include "types.hpp"
 #include "utils/set.hpp"
 #include "vector"
-
-using Message = Types::SemaphoreMutexData<String>;
-
 struct CommunicateResponse
 {
-  char *header;
-  char *content;
+  String id;
+  String header;
+  String content;
 };
+
+using Message = Types::SemaphoreMutexData<CommunicateResponse>;
 
 class Communicate
 {
@@ -39,6 +39,7 @@ public:
   bool begin();
   bool send(String header, const std::vector<String> &data);
   String getReceiveMsg();
+  CommunicateResponse getResponse();
 };
 
 #endif
