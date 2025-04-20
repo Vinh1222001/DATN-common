@@ -55,7 +55,7 @@ bool Communicate::send(String header, const std::vector<String> &data)
   }
 
   const Types::EspNowMessage msg = SetUtils::createEspNowMessage<String>(header, combined);
-  ESP_LOGI(this->TAG, "Data send: Id:%s, header, %s, content: %s, size: %d", msg.id, msg.header, msg.content, sizeof(msg));
+  ESP_LOGI(this->TAG, "Data send: header, %s, content: %s, size: %d", msg.header, msg.content, sizeof(msg));
   esp_err_t result = esp_now_send(peerMac, reinterpret_cast<const uint8_t *>(&msg), sizeof(msg));
   if (result == ESP_OK)
   {
@@ -96,11 +96,10 @@ void Communicate::onDataRecv(const uint8_t *mac, const uint8_t *incomingData, in
 
   // Chuyển đổi dữ liệu thành Message
   const Types::EspNowMessage *packet = reinterpret_cast<const Types::EspNowMessage *>(incomingData);
-  ESP_LOGI(this->TAG, "Data Received: Id: %s, Value: %s", packet->id, packet->content);
+  ESP_LOGI(this->TAG, "Data Received: header: %s, Value: %s", packet->header, packet->content);
   // TODO: Bạn có thể thêm logic xử lý dữ liệu ở đây
   if (xSemaphoreTake(this->receiveMsg.xMutex, portMAX_DELAY) == pdTRUE)
   {
-    this->receiveMsg.value.id = String(packet->id);
     this->receiveMsg.value.header = String(packet->header);
     this->receiveMsg.value.content = String(packet->content);
     xSemaphoreGive(this->receiveMsg.xMutex);

@@ -9,7 +9,6 @@
 #include "vector"
 struct CommunicateResponse
 {
-  String id;
   String header;
   String content;
 };
