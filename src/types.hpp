@@ -43,9 +43,9 @@ namespace Types
 
   struct EspNowMessage
   {
-    char id[36];
+    // char id[36];
     char header[13];
-    char content[200];
+    char content[236];
   };
 
 }

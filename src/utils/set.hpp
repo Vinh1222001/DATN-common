@@ -4,18 +4,18 @@
 
 #include <Arduino.h>
 #include "types.hpp"
-#include <UUID.h>
+// #include <UUID.h>
 
 namespace SetUtils
 {
-    inline String generateUUID()
-    {
-        UUID uuid;
-        uuid.setVersion4Mode();
-        uuid.seed(millis());       // Seed bằng thời gian hiện tại
-        uuid.generate();           // Tạo UUID mới
-        return uuid.toCharArray(); // Chuyển UUID thành chuỗi
-    }
+    // inline String generateUUID()
+    // {
+    //     UUID uuid;
+    //     uuid.setVersion4Mode();
+    //     uuid.seed(millis());       // Seed bằng thời gian hiện tại
+    //     uuid.generate();           // Tạo UUID mới
+    //     return uuid.toCharArray(); // Chuyển UUID thành chuỗi
+    // }
 
     template <typename T>
     Types::EspNowMessage createEspNowMessage(String header, const T &content)
@@ -23,9 +23,9 @@ namespace SetUtils
         const String _content(content);
         Types::EspNowMessage message;
 
-        const String uuid = generateUUID();
-        strncpy(message.id, uuid.c_str(), sizeof(message.id) - 1);
-        message.id[sizeof(message.id) - 1] = '\0';
+        // const String uuid = generateUUID();
+        // strncpy(message.id, uuid.c_str(), sizeof(message.id) - 1);
+        // message.id[sizeof(message.id) - 1] = '\0';
 
         strncpy(message.header, header.c_str(), sizeof(message.header) - 1);
         message.header[sizeof(message.header) - 1] = '\0';
