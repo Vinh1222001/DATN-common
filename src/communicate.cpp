@@ -51,7 +51,7 @@ bool Communicate::send(String header, const std::vector<String> &data)
   {
     combined += data[i];
     if (i < data.size() - 1)
-      combined += ","; // dùng dấu phẩy để phân tách
+      combined += "|"; // dùng dấu phẩy để phân tách
   }
 
   const Types::EspNowMessage msg = SetUtils::createEspNowMessage<String>(header, combined);
