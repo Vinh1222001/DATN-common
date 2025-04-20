@@ -97,23 +97,25 @@ void Communicate::onDataRecv(const uint8_t *mac, const uint8_t *incomingData, in
   // Chuyển đổi dữ liệu thành Message
   const Types::EspNowMessage *packet = reinterpret_cast<const Types::EspNowMessage *>(incomingData);
   ESP_LOGI(this->TAG, "Data Received: header: %s, Value: %s", packet->header, packet->content);
+
   // TODO: Bạn có thể thêm logic xử lý dữ liệu ở đây
   if (xSemaphoreTake(this->receiveMsg.xMutex, portMAX_DELAY) == pdTRUE)
   {
     this->receiveMsg.value.header = String(packet->header);
-    this->receiveMsg.value.content = String(packet->content);
+    String rawContent = String(packet->content);
+    this->receiveMsg.value.content = StringUtils::splitString(rawContent, '|');
     xSemaphoreGive(this->receiveMsg.xMutex);
   }
 }
 
-String Communicate::getReceiveMsg()
+std::vector<String> Communicate::getReceiveMsg()
 {
-  String msg;
+  std::vector<String> msg;
   if (xSemaphoreTake(this->receiveMsg.xMutex, portMAX_DELAY) == pdTRUE)
   {
-    if (this->receiveMsg.value.content.length() > 0)
+    if (this->receiveMsg.value.content.size() > 0)
     {
-      msg = String(this->receiveMsg.value.content);
+      msg = this->receiveMsg.value.content;
     }
 
     xSemaphoreGive(this->receiveMsg.xMutex);

@@ -6,11 +6,12 @@
 #include "esp_log.h"
 #include "types.hpp"
 #include "utils/set.hpp"
+#include "utils/stringUtils.hpp"
 #include "vector"
 struct CommunicateResponse
 {
   String header;
-  String content;
+  std::vector<String> content;
 };
 
 using Message = Types::SemaphoreMutexData<CommunicateResponse>;
@@ -37,7 +38,7 @@ public:
 
   bool begin();
   bool send(String header, const std::vector<String> &data);
-  String getReceiveMsg();
+  std::vector<String> getReceiveMsg();
   CommunicateResponse getResponse();
 };
 

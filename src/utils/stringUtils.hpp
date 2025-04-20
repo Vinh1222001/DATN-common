@@ -2,34 +2,32 @@
 #ifndef STRING_UTILS_HPP
 #define STRING_UTILS_HPP
 
+#include <Arduino.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <vector>
 
 namespace StringUtils
 {
-    char **split(const char *str, const char *delimiter, int *count)
+    std::vector<String> splitString(const String &data, char delimiter)
     {
-        char *s = strdup(str); // sao chép chuỗi gốc
-        char *token;
-        int size = 10; // kích thước ban đầu
-        char **result = (char **)malloc(size * sizeof(char *));
-        *count = 0;
+        std::vector<String> result;
+        int startIndex = 0;
+        int endIndex = 0;
 
-        token = strtok(s, delimiter);
-        while (token != NULL)
+        while ((endIndex = data.indexOf(delimiter, startIndex)) != -1)
         {
-            if (*count >= size)
-            {
-                size *= 2;
-                result = (char **)realloc(result, size * sizeof(char *));
-            }
-            result[*count] = strdup(token);
-            (*count)++;
-            token = strtok(NULL, delimiter);
+            result.push_back(data.substring(startIndex, endIndex));
+            startIndex = endIndex + 1;
         }
 
-        free(s);
+        // Thêm phần cuối cùng
+        if (startIndex < data.length())
+        {
+            result.push_back(data.substring(startIndex));
+        }
+
         return result;
     }
 
@@ -41,6 +39,7 @@ namespace StringUtils
         }
         free(arr);
     }
+
 }
 
 #endif
