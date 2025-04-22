@@ -101,9 +101,12 @@ void Communicate::onDataRecv(const uint8_t *mac, const uint8_t *incomingData, in
   // TODO: Bạn có thể thêm logic xử lý dữ liệu ở đây
   if (xSemaphoreTake(this->receiveMsg.xMutex, portMAX_DELAY) == pdTRUE)
   {
-    this->receiveMsg.value.header = String(packet->header);
-    String rawContent = String(packet->content);
-    this->receiveMsg.value.content = StringUtils::splitString(rawContent, '|');
+    if (this->receiveMsg.value.header.compareTo("NONE_DATA") == 0)
+    {
+      this->receiveMsg.value.header = String(packet->header);
+      String rawContent = String(packet->content);
+      this->receiveMsg.value.content = StringUtils::splitString(rawContent, '|');
+    }
     xSemaphoreGive(this->receiveMsg.xMutex);
   }
 }
@@ -127,9 +130,15 @@ std::vector<String> Communicate::getReceiveMsg()
 CommunicateResponse Communicate::getResponse()
 {
   CommunicateResponse response;
+  response.header = "NONE_DATA";
   if (xSemaphoreTake(this->receiveMsg.xMutex, portMAX_DELAY) == pdTRUE)
   {
-    response = this->receiveMsg.value;
+    if (this->receiveMsg.value.header.compareTo("NONE_DATA") != 0)
+    {
+      response = this->receiveMsg.value;
+      this->receiveMsg.value.header = "NONE_DATA";
+      this->receiveMsg.value.content.clear();
+    }
 
     xSemaphoreGive(this->receiveMsg.xMutex);
   }
