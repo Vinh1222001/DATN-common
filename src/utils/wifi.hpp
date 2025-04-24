@@ -38,7 +38,7 @@ namespace WifiUtil
             }
 
             WiFi.begin(ssid, password);
-            ESP_LOGI(TAG, "Connecting to WiFi SSID: %s", ssid);
+            ESP_LOGI(TAG, "Connecting to WiFi SSID: %s and PASSWORD: %s", ssid, password);
 
             if (waitForConnect)
             {
