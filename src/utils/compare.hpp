@@ -4,6 +4,13 @@
 
 #include <Arduino.h>
 
+#define IS_NULL(component)                       \
+  if ((component) == nullptr)                    \
+  {                                              \
+    ESP_LOGE(this->NAME, #component " is null"); \
+    return;                                      \
+  }
+
 namespace CompareUtils
 {
   template <typename T>
