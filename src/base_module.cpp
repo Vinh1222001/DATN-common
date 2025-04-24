@@ -88,6 +88,14 @@ void BaseModule::run()
   }
 }
 
+void BaseModule::suspend()
+{
+  if (this->isTaskRunning())
+  {
+    vTaskSuspend(this->taskHandler);
+  }
+}
+
 void BaseModule::createTask()
 {
   if (this->taskHandler == NULL)

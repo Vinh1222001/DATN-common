@@ -28,6 +28,7 @@ public:
   static void taskWrapper(void *pvParameter);
   void createTask();
   void run();
+  void suspend();
 
   TaskHandle_t getTaskHandler();
   bool isTaskBlocked();
