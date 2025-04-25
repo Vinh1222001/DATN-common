@@ -9,6 +9,8 @@ Communicate::Communicate(const uint8_t mac[6])
   instance = this;
   memcpy(this->peerMac, mac, 6);
   this->receiveMsg.xMutex = xSemaphoreCreateMutex();
+  this->isSuccess.value = false;
+  this->isSuccess.xMutex = xSemaphoreCreateMutex();
   this->begin();
 }
 
@@ -87,6 +89,11 @@ void Communicate::onDataSent(const uint8_t *mac_addr, esp_now_send_status_t stat
            mac_addr[0], mac_addr[1], mac_addr[2],
            mac_addr[3], mac_addr[4], mac_addr[5],
            status == ESP_NOW_SEND_SUCCESS ? "Success" : "Fail");
+  if (xSemaphoreTake(this->isSuccess.xMutex, portMAX_DELAY) == pdTRUE)
+  {
+    this->isSuccess.value = status == ESP_NOW_SEND_SUCCESS;
+    xSemaphoreGive(this->isSuccess.xMutex);
+  }
 }
 
 void Communicate::onDataRecv(const uint8_t *mac, const uint8_t *incomingData, int len)
@@ -144,4 +151,17 @@ CommunicateResponse Communicate::getResponse()
   }
 
   return response;
+}
+
+bool Communicate::isSentSuccess()
+{
+  bool status = false;
+  if (xSemaphoreTake(this->isSuccess.xMutex, portMAX_DELAY) == pdTRUE)
+  {
+    status = this->isSuccess.value;
+    this->isSuccess.value = false;
+    xSemaphoreGive(this->isSuccess.xMutex);
+  }
+
+  return status;
 }

@@ -15,6 +15,7 @@ struct CommunicateResponse
 };
 
 using Message = Types::SemaphoreMutexData<CommunicateResponse>;
+using SendStatus = Types::SemaphoreMutexData<bool>;
 
 class Communicate
 {
@@ -24,6 +25,7 @@ private:
   uint8_t peerMac[6];
 
   Message receiveMsg;
+  SendStatus isSuccess;
   // Static callbacks
   static void onDataSentStatic(const uint8_t *mac_addr, esp_now_send_status_t status);
   static void onDataRecvStatic(const uint8_t *mac, const uint8_t *incomingData, int len);
@@ -38,6 +40,7 @@ public:
 
   bool begin();
   bool send(String header, const std::vector<String> &data);
+  bool isSentSuccess();
   std::vector<String> getReceiveMsg();
   CommunicateResponse getResponse();
 };
